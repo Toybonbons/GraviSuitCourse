@@ -660,6 +660,94 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menus",
+            "id": "49f6c6d0-12a1-4277-9659-475dd555876c",
+            "actions": [
+                {
+                    "name": "Ingame Menu",
+                    "type": "Button",
+                    "id": "81c79621-6c32-4b48-b1b7-a31acb990645",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "22bdea77-0b3a-4a33-a620-eedc5f4b6f44",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SettingsTabLeft",
+                    "type": "Button",
+                    "id": "ff2aeffe-7956-4f64-accc-c8be148802f2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SettingsTabRight",
+                    "type": "Button",
+                    "id": "e141fca7-c873-421a-875f-6893537766fe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "de2f7edc-fb52-4826-921f-d93fe729e44d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ingame Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c508a6c7-953a-400c-a1cc-cd48a0429b29",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9bf6831e-4970-40d5-a380-88bf59490499",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SettingsTabLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18cf17d7-2968-4bc4-ba0d-54af20681269",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SettingsTabRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

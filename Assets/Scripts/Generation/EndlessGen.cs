@@ -1,27 +1,44 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EndlessGen : MonoBehaviour
 {
     [Header("Room Lists")]
     [SerializeField] GameObject testRoom;
+    [SerializeField] RoomLists roomLists;
+    [SerializeField] GameObject doorTemp;
 
     [Header("Storage Places")]
     [SerializeField] GameObject genRoomStorage;
 
+    [Header("Values")]
+    public int currentRoom = 0;
+    private int playerInRoom = 0;
+    public List<GameObject> activeRooms;
 
     [Header("Debug Config")]
     [SerializeField] float roomCount;
+    [SerializeField] int maxLoadedRooms = 5;
 
     private Vector3 nextAnchor;
 
 
+    public static EndlessGen instance;
+
+
     //Unity Func
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
         nextAnchor = new Vector3(0, 0.5f,0);
 
-        testGeneration();
+        createNewRoom();
     }
 
     //Generation Func
@@ -35,9 +52,21 @@ public class EndlessGen : MonoBehaviour
         }
     }
 
+    public void genIncrement()
+    {
+        createNewRoom();
+
+        playerInRoom += 1;
+
+        if (playerInRoom - maxLoadedRooms > 0)
+        {
+            unloadLastRoom();
+        }
+    }
+
     void createNewRoom()
     {
-        GameObject roomModel = Instantiate(testRoom);
+        GameObject roomModel = Instantiate(selectRoomDiff());
         Transform roomTrans = roomModel.transform;
 
         Transform nodeStorage = roomTrans.Find("Nodes");
@@ -50,9 +79,51 @@ public class EndlessGen : MonoBehaviour
 
         roomTrans.parent = genRoomStorage.transform;
         nextAnchor = endNode.position;
+
+        //Door
+        createNewDoor(endNode);
+
+        if (currentRoom == 0) createNewDoor(startNode);
+
+        //Saving
+        activeRooms.Add(roomModel);
+        currentRoom += 1;
     }
 
-    //Room Positioning
+    void unloadLastRoom()
+    {
+        GameObject room = activeRooms[0];
+        activeRooms.RemoveAt(0);
 
+        Destroy(room);
+    }
+
+    //Room Selection
+
+    GameObject selectRoomDiff()
+    {
+        string chosenDiff = "easy";
+
+        return chooseRoom(chosenDiff);
+    }
+
+    GameObject chooseRoom(string diff)
+    {
+        GameObject[] chosenRoomTable = roomLists.easyRooms;
+
+        int randNum = Random.Range(0, chosenRoomTable.Count());
+
+        return chosenRoomTable[randNum];
+    }
+
+    //Door Gen
+
+    void createNewDoor(Transform node)
+    {
+        GameObject door = Instantiate(doorTemp);
+
+        door.transform.SetPositionAndRotation(node.position, node.rotation);
+        door.transform.parent = node;
+    }
 
 }

@@ -6,6 +6,8 @@ using UnityEngine.SocialPlatforms;
 
 public class PlayerMain : MonoBehaviour
 {
+    //SubScripts
+    private PlayerGUI guiScript;
     private InputService inputService;
 
     [Header("Player Models")]
@@ -15,7 +17,8 @@ public class PlayerMain : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] Camera playerCam;
-    public float targetFov, fovMulti, fovLerp;
+    public float targetFov, fovMulti, fovLerp, leanMulti;
+    private float horiMove;
 
     [Header("Config Vals")]
     [SerializeField] float mouseSens = 1f;
@@ -50,6 +53,7 @@ public class PlayerMain : MonoBehaviour
     //Instancing
     public static PlayerMain instance;
 
+
     void Awake()
     {
         instance = this;
@@ -58,6 +62,7 @@ public class PlayerMain : MonoBehaviour
     void Start()
     {
         inputService = InputService.Instance;
+        guiScript = PlayerGUI.instance;
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -95,6 +100,7 @@ public class PlayerMain : MonoBehaviour
         Vector2 moveDirection = inputService.moveVal;
 
         Vector2 moveForce = moveDirection * new Vector2(moveSpeed, moveSpeed);
+        horiMove = Mathf.Lerp(horiMove, -moveDirection.x * leanMulti, 0.25f);
     
         Vector3 finalMoveForce = new Vector3(moveForce.x, 0, moveForce.y);
         finalMoveForce = cameraHolder.transform.TransformDirection(finalMoveForce);
@@ -119,6 +125,8 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("JUMP!");
             StartCoroutine(jumpPhysics());
             currentJumps -= 1;
+
+            guiScript.updJumps(currentJumps);
         }
     }
 
@@ -147,6 +155,7 @@ public class PlayerMain : MonoBehaviour
         StartCoroutine(dashPhysics(dashForce));
 
         currentDashes -= 1;
+        guiScript.updDashes(currentDashes);
     }
 
     IEnumerator dashPhysics(Vector3 dashForce)
@@ -172,8 +181,17 @@ public class PlayerMain : MonoBehaviour
         //Results of The Check (TM)
         if (grounded)
         {
-            currentJumps = maxJumps;
-            currentDashes = maxDashes;
+            if (currentJumps != maxJumps)
+            {
+                currentJumps = maxJumps;
+                guiScript.updJumps(currentJumps);
+            }
+
+            if (currentDashes != maxDashes)
+            {
+                currentDashes = maxDashes;
+                guiScript.updDashes(currentDashes);
+            }
         }
     }
 
@@ -195,13 +213,15 @@ public class PlayerMain : MonoBehaviour
     public void changeGravity(Vector3 newGrav)
     {
         if (gravityDir == newGrav) return;
-        
 
         gravityDir = newGrav;
         graviLerps = 0;
         currentGraviDelay = 0f;
 
-        rb.AddForce(-rb.linearVelocity, ForceMode.VelocityChange);
+        currentJumps = Mathf.Clamp(currentJumps, 1, maxJumps);
+        guiScript.updJumps(currentJumps);
+
+        //rb.linearVelocity = Vector3.zero;
     }
 
     //Camera Stuff
@@ -229,7 +249,7 @@ public class PlayerMain : MonoBehaviour
         camHoriRot = camHoriRot % 360;
 
         //Set Rotations
-        cameraVerti.transform.localRotation = Quaternion.Euler(vertiRot,camHoriRot,0);
+        cameraVerti.transform.localRotation = Quaternion.Euler(vertiRot,camHoriRot, horiMove);
         cameraHolder.transform.localRotation = Quaternion.Euler(0, horiRot,0);
 
         camFlipper.transform.position = cameraHolder.transform.position + playerModel.transform.TransformDirection(new Vector3(0, 0.5f, 0));
