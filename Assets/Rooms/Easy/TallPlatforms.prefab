@@ -1299,18 +1299,6 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 2556
       objectReference: {fileID: 0}
-    - target: {fileID: 5301953014794655318, guid: dfbc906d000cdef4293e2e9cc58281d5, type: 3}
-      propertyPath: m_SelectedEdges.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5301953014794655318, guid: dfbc906d000cdef4293e2e9cc58281d5, type: 3}
-      propertyPath: m_SelectedFaces.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5301953014794655318, guid: dfbc906d000cdef4293e2e9cc58281d5, type: 3}
-      propertyPath: m_SelectedVertices.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5583964984830744398, guid: dfbc906d000cdef4293e2e9cc58281d5, type: 3}
       propertyPath: m_VersionIndex
       value: 3935
