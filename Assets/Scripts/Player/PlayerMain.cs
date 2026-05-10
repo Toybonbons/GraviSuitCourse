@@ -9,6 +9,7 @@ public class PlayerMain : MonoBehaviour
     //SubScripts
     private PlayerGUI guiScript;
     private InputService inputService;
+    [SerializeField] DeathHandler deathScript;
 
     [Header("Player Models")]
     [SerializeField] GameObject playerModel;
@@ -33,6 +34,7 @@ public class PlayerMain : MonoBehaviour
     public float gravityStrength, maxGraviLerps;
     private float graviLerps = 61;
     public float graviDelay = 1f, currentGraviDelay = 0f;
+    public float health = 100f;
 
     //Jumping
     [Header("Movement Values")]
@@ -65,6 +67,7 @@ public class PlayerMain : MonoBehaviour
         guiScript = PlayerGUI.instance;
 
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1;
 
         //gravityDir = Vector3.down;
     }
@@ -133,6 +136,31 @@ public class PlayerMain : MonoBehaviour
     IEnumerator jumpPhysics()
     {
         float time = 0.1f;
+
+        while (time > 0)
+        {
+            time -= Time.fixedDeltaTime;
+            rb.AddForce(-gravityDir * jumpStrength * fixedDeltaTimeVal * time, ForceMode.VelocityChange);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    //Pit Boost
+    public void pitBoost()
+    {
+        Debug.Log("Fell into pit :(");
+        health -= 15;
+        guiScript.updHealth(health);
+
+        if (health <= 0) toggleDeath();
+        
+        rb.linearVelocity = Vector3.zero;
+        StartCoroutine(applyPitBoost());
+    }
+
+    IEnumerator applyPitBoost()
+    {
+        float time = 0.15f;
 
         while (time > 0)
         {
@@ -222,6 +250,15 @@ public class PlayerMain : MonoBehaviour
         guiScript.updJumps(currentJumps);
 
         //rb.linearVelocity = Vector3.zero;
+    }
+
+    //Death
+    void toggleDeath()
+    {
+        deathScript.startDeath();
+        guiScript.showDeathScreen();
+
+        Time.timeScale = 0;
     }
 
     //Camera Stuff

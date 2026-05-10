@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class PlayerGUI : MonoBehaviour
 {
-    
+    [Header("Death Screen")]
+    [SerializeField] GameObject DeathScreen;
+
     [Header("GUI Objects")]
     [SerializeField] GameObject HealthBar;
     [SerializeField] GameObject JumpBar, DashBar;
 
     //BarVals
-    private float[] statBarVals = {2,1};
+    private float[] statBarVals = {2,1,100};
     
     //Instancing
     public static PlayerGUI instance;
@@ -31,6 +33,11 @@ public class PlayerGUI : MonoBehaviour
         DashBar.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
     }
 
+    //Death Screen
+    public void showDeathScreen()
+    {
+        DeathScreen.SetActive(true);
+    }
 
     //Upd Stat Bars
     public void updJumps(float jumpCount)
@@ -47,6 +54,14 @@ public class PlayerGUI : MonoBehaviour
         statBarVals[1] = dashCount;
         
         StartCoroutine(lerpStatBar(DashBar.GetComponent<RectTransform>(), barProgress, 1));
+    }
+
+    public void updHealth(float healthVal)
+    {
+        float barProgress = healthVal / 100;
+        statBarVals[2] = healthVal;
+
+        StartCoroutine(lerpStatBar(HealthBar.GetComponent<RectTransform>(), barProgress, 2));
     }
 
 

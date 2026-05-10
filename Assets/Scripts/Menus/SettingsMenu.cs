@@ -15,8 +15,9 @@ public class SettingsMenu : MonoBehaviour
 
     void Start()
     {
-        activeTab = initialTab;
+        loadSettingsData();
 
+        activeTab = initialTab;
         activeTab.highlightGUI();
     }
 
@@ -29,6 +30,18 @@ public class SettingsMenu : MonoBehaviour
         activeTab.unhighlightGUI();
 
         activeTab = tabScript;
+    }
+
+    //DATA HANDLING
+    void loadSettingsData()
+    {
+        bool settingsSet = PlayerPrefs.HasKey("SettingsData");
+
+        if (!settingsSet)
+        {
+            Debug.Log("No Settings Data Found!");
+            return;
+        }
     }
 
 }

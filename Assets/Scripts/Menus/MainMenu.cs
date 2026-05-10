@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,6 +13,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] Button storyModeButton, endlessModeButton;
     [SerializeField] Button settingsButton, achievementsButton;
 
+    //Audio
+    [Header("Audio")]
+    [SerializeField] AudioSource music;
 
     //Values
     [Header("Values")]
@@ -28,9 +32,12 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
+
         status = "MainScreen";
         activeScreen = mainScreen;
 
+        StartCoroutine(musicStart());
         setupButtons();
     }
 
@@ -48,11 +55,29 @@ public class MainMenu : MonoBehaviour
         settingsButton.onClick.AddListener(settingsMenu);
     }
 
+    IEnumerator musicStart()
+    {
+        float time = 0;
+
+        while (time <= 2)
+        {
+            time += Time.deltaTime;
+            Debug.Log(time);
+
+            float progressVal = time / 2;
+
+            music.volume = progressVal;
+            music.pitch = progressVal * .9f;
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     //Scene Transition
     void loadEndlessMode()
     {
         showLoadingScreen();
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 
     //Menu Navi
