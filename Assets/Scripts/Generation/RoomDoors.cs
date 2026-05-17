@@ -6,7 +6,7 @@ public class RoomDoors : MonoBehaviour
     private bool opened;
     private EndlessGen genScript;
 
-    [SerializeField] GameObject doorMesh;
+    [SerializeField] Animator doorAnim;
 
     void Start()
     {
@@ -26,8 +26,7 @@ public class RoomDoors : MonoBehaviour
     //Door Func
     void openDoor()
     {
+        doorAnim.SetTrigger("Open");
         genScript.genIncrement();
-
-        Destroy(doorMesh);
     }
 }

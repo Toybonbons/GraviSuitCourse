@@ -20,6 +20,8 @@ MonoBehaviour:
   - {fileID: 3589426666129899418, guid: b56278dbf6b4d2847a143994196a2a19, type: 3}
   mediumRooms:
   - {fileID: 6232834746374141828, guid: 0a593281a52be9749810d13e21c0c87f, type: 3}
+  - {fileID: 3385732240715826039, guid: 1580637c6e028fc4cb70e405828dd5be, type: 3}
+  - {fileID: 8964081531881988207, guid: b70d02204f6c23c44acb768b558b6b2a, type: 3}
   hardRooms: []
   mediumUnlock: 1
   hardUnlock: 10
