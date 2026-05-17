@@ -6,6 +6,11 @@ public class RoomLists : ScriptableObject
     [Header("Normal Lists")]
     public GameObject[] easyRooms;
     public GameObject[] mediumRooms;
-    public GameObject[] graviRooms;
+    public GameObject[] hardRooms;
+
+
+    [Header("Unlock Points")]
+    public int mediumUnlock;
+    public int hardUnlock;
 
 }

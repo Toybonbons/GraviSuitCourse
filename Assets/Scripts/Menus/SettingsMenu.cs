@@ -1,10 +1,17 @@
+using System;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
     [Header("Setting Tabs")]
     [SerializeField] SettingsTabGUI initialTab;
     private SettingsTabGUI activeTab;
+
+    [Header("Misc")]
+    [SerializeField] AudioMixer musicMixer;
     
     public static SettingsMenu Instance;
 
@@ -15,8 +22,6 @@ public class SettingsMenu : MonoBehaviour
 
     void Start()
     {
-        loadSettingsData();
-
         activeTab = initialTab;
         activeTab.highlightGUI();
     }
@@ -33,14 +38,12 @@ public class SettingsMenu : MonoBehaviour
     }
 
     //DATA HANDLING
-    void loadSettingsData()
+    public void updSettingVal(string settingName, float value)
     {
-        bool settingsSet = PlayerPrefs.HasKey("SettingsData");
-
-        if (!settingsSet)
+        switch (settingName)
         {
-            Debug.Log("No Settings Data Found!");
-            return;
+            case "Music": musicMixer.SetFloat("Volume", MathF.Log10(value) * 20); break;
+            case "Pitch": musicMixer.SetFloat("Pitch", value); break;
         }
     }
 

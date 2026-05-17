@@ -5,7 +5,8 @@ public class GlobalData : ScriptableObject
 {
     /*
         Things we need to store here
-
         
     */
+
+    
 }

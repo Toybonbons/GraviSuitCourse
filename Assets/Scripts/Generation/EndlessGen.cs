@@ -16,6 +16,7 @@ public class EndlessGen : MonoBehaviour
     public int currentRoom = 0;
     private int playerInRoom = 0;
     public List<GameObject> activeRooms;
+    private GameObject lastRoom;
 
     [Header("Debug Config")]
     [SerializeField] float roomCount;
@@ -42,16 +43,6 @@ public class EndlessGen : MonoBehaviour
     }
 
     //Generation Func
-
-    void testGeneration()
-    {
-        for (int i = 0; i < roomCount; i++)
-        {
-            Debug.Log($"GEN ROOM {i + 1}");
-            createNewRoom();
-        }
-    }
-
     public void genIncrement()
     {
         createNewRoom();
@@ -107,12 +98,27 @@ public class EndlessGen : MonoBehaviour
         return chooseRoom(chosenDiff);
     }
 
+    List<GameObject> getRoomTable()
+    {
+        List<GameObject> roomList = new List<GameObject>();
+
+        roomList.AddRange(roomLists.easyRooms);
+
+        if (currentRoom >= roomLists.mediumUnlock) roomList.AddRange(roomLists.mediumRooms);
+        if (currentRoom >= roomLists.hardUnlock) roomList.AddRange(roomLists.hardRooms);
+
+        if (lastRoom) roomList.Remove(lastRoom);
+
+        return roomList;
+    }
+
     GameObject chooseRoom(string diff)
     {
-        GameObject[] chosenRoomTable = roomLists.easyRooms;
+        List<GameObject> chosenRoomTable = getRoomTable();
 
         int randNum = Random.Range(0, chosenRoomTable.Count());
 
+        lastRoom = chosenRoomTable[randNum];
         return chosenRoomTable[randNum];
     }
 

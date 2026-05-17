@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,10 +10,15 @@ public class SettingsSliderGUI : MonoBehaviour
     [SerializeField] Slider slider;
 
     [SerializeField] string settingName;
+    [SerializeField] int displayMultiplier = 1;
+
+    private SettingsMenu settingsMenuScript;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        settingsMenuScript = SettingsMenu.Instance;
+
         slider.onValueChanged.AddListener(updSliderVal);
 
         loadSettingVal();
@@ -20,7 +26,9 @@ public class SettingsSliderGUI : MonoBehaviour
 
     void updSliderVal(float newVal)
     {
-        valueText.text = newVal.ToString();
+        valueText.text = math.round(newVal * displayMultiplier).ToString();
+
+        settingsMenuScript.updSettingVal(settingName, newVal);
 
         PlayerPrefs.SetFloat(settingName, newVal);
     }
@@ -35,7 +43,9 @@ public class SettingsSliderGUI : MonoBehaviour
         
         float settingData = PlayerPrefs.GetFloat(settingName);
 
-        valueText.text = settingData.ToString();
+        valueText.text = math.round(settingData * displayMultiplier).ToString();
         slider.value = settingData;
+
+        settingsMenuScript.updSettingVal(settingName, settingData);
     }
 }
